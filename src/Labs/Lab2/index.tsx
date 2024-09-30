@@ -1,4 +1,24 @@
 import './index.css';
+import ForegroundColors from './ForegroundColors';
+import BackgroundColors from './BackgroundColors';
+import Borders from './Borders';
+import Paddings from './Padding';
+import Margins from './Margins';
+import Corners from './Corners';
+import Dimensions from './Dimensions';
+import Positions from './Positions';
+import Zindex from './Zindex';
+import Float from './Float';
+import GridLayout from './GridLayout';
+import Flex from './Flex';
+import ReactIconsSampler from './ReactIcons';
+import BootstrapGrids from './BootstrapGrids';
+import ScreenSizeLabel from './ScreenSizeLabel';
+import BootstrapTables from './BootstrapTables';
+import BootstrapLists from './BootstrapLists';
+import BootstrapForms from './BootstrapForms';
+import BootstrapNavigation from './BootstrapNavigation';
+
 export default function Lab2() {
     return (
         <div className="container">
@@ -50,8 +70,63 @@ export default function Lab2() {
                     </div>
                 </div>
             </div>
-            
-            
+            <div className="ForegroundColors">
+                <ForegroundColors />
+            </div>
+            <div className="BackgroundColors">
+                <BackgroundColors />
+            </div>
+            <div className="Borders">
+                <Borders />
+            </div>
+            <div className="Paddings">
+                <Paddings />
+            </div>
+            <div className="Margins">
+                <Margins />
+            </div>
+            <div className="Corners">
+                <Corners />
+            </div>
+            <div className="Dimensions">
+                <Dimensions />
+            </div>
+            <div className="Positions">
+                <Positions />
+            </div>
+            <div className="Zindex">
+                <Zindex />
+            </div>
+            <div className="Float">
+                <Float />
+            </div>
+            <div className="GridLayout">
+                <GridLayout />
+            </div>
+            <div className="Flex">
+                <Flex />
+            </div>
+            <div className="ReactIconsSampler">
+                <ReactIconsSampler />
+            </div>
+            <div className="BootstrapGrids">
+                <BootstrapGrids />
+            </div>
+            <div className="ScreenSizeLabel">
+                <ScreenSizeLabel />
+            </div>
+            <div className="BootstrapTables">
+                <BootstrapTables />
+            </div>
+            <div className="BootstrapLists">
+                <BootstrapLists />
+            </div>
+            <div className="BootstrapForms">
+                <BootstrapForms />
+            </div>
+            <div className="BootstrapNavigation">
+                <BootstrapNavigation />
+            </div>
         </div>
     );
 }

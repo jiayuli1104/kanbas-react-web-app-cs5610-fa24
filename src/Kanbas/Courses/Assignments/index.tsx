@@ -20,8 +20,8 @@ export default function Assignments() {
           <div className="col-7 pt-3 pb-3">
             <div><strong>A1</strong></div>
             <div>
-              <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> Oct 6 at 12:00am |
-              <strong> Due</strong> Oct 16 at 11:59pm | 100 pts
+              <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> May 6 at 12:00am |
+              <strong> Due</strong> May 13 at 11:59pm | 100 pts
             </div>
           </div>
           <div className="col-3 d-flex align-items-center justify-content-end p-3">
@@ -39,8 +39,8 @@ export default function Assignments() {
           <div className="col-7 pt-3 pb-3">
             <div><strong>A2</strong></div>
             <div>
-              <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> Oct 15 at 12:00am |
-              <strong> Due</strong> Oct 25 at 11:59pm | 100 pts
+              <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> May 13 at 12:00am |
+              <strong> Due</strong> May 20 at 11:59pm | 100 pts
             </div>
           </div>
           <div className="col-3 d-flex align-items-center justify-content-end p-3">
@@ -57,8 +57,8 @@ export default function Assignments() {
           <div className="col-7 pt-3 pb-3">
             <div><strong>A3</strong></div>
             <div>
-              <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> Oct 20 at 12:00am |
-              <strong> Due</strong> Oct 30 at 11:59pm | 100 pts
+              <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> May 20 at 12:00am |
+              <strong> Due</strong> May 27 at 11:59pm | 100 pts
             </div>
           </div>
           <div className="col-3 d-flex align-items-center justify-content-end p-3">

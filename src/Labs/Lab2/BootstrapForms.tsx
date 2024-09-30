@@ -1,3 +1,5 @@
+export default function BootstrapForms() {
+    return (
 <div>
     <div id="wd-css-styling-forms">
         <h2>Forms</h2>
@@ -158,3 +160,5 @@
         </form>
     </div>
 </div>
+  );
+}
