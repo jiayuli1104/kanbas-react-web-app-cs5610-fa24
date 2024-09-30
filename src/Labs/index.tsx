@@ -6,7 +6,7 @@ import TOC from "./TOC";
 export default function Labs() {
     return (
       <div>
-        <h1>Jiayu Li Section 02</h1>
+        <h1>Jiayu Li</h1>
         <h1>Labs</h1>
         <TOC />
         <Routes>
@@ -16,4 +16,4 @@ export default function Labs() {
         </Routes>
       </div>
     );
-}
+};
