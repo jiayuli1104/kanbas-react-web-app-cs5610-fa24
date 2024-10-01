@@ -1,4 +1,5 @@
 import { FaSearch, FaPlus } from 'react-icons/fa';
+
 export default function AssignmentsControls() {
   return (
     <div className="d-flex align-items-center justify-content-start pb-1 mb-3 text-nowrap">

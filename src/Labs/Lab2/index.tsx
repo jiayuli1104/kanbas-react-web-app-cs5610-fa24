@@ -1,6 +1,14 @@
+import BootstrapTables from './BootstrapTables';
+import BootstrapLists from './BootstrapLists';
+import GridLayout from './GridLayout';
+import Flex from './Flex';
+import ReactIconsSampler from './ReactIcons';
+import BootstrapGrids from './BootstrapGrids';
+import ScreenSizeLabel from './ScreenSizeLabel';
+
+import BootstrapForms from './BootstrapForms';
+import BootstrapNavigation from './BootstrapNavigation';
 import './index.css';
-import ForegroundColors from './ForegroundColors';
-import BackgroundColors from './BackgroundColors';
 import Borders from './Borders';
 import Paddings from './Padding';
 import Margins from './Margins';
@@ -9,15 +17,10 @@ import Dimensions from './Dimensions';
 import Positions from './Positions';
 import Zindex from './Zindex';
 import Float from './Float';
-import GridLayout from './GridLayout';
-import Flex from './Flex';
-import ReactIconsSampler from './ReactIcons';
-import BootstrapGrids from './BootstrapGrids';
-import ScreenSizeLabel from './ScreenSizeLabel';
-import BootstrapTables from './BootstrapTables';
-import BootstrapLists from './BootstrapLists';
-import BootstrapForms from './BootstrapForms';
-import BootstrapNavigation from './BootstrapNavigation';
+
+import ForegroundColors from './ForegroundColors';
+import BackgroundColors from './BackgroundColors';
+
 
 export default function Lab2() {
     return (

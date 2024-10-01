@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 export default function LandingNavigation() {
     return (
         <div id="wd-landing-navigation">

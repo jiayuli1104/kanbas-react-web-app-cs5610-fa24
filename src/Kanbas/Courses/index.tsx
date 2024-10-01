@@ -1,11 +1,13 @@
+import { Navigate, Route, Routes } from "react-router";
+import { FaAlignJustify } from "react-icons/fa6";
+
 import CoursesNavigation from "./Navigation";
 import Modules from "./Modules";
 import Home from "./Home";
 import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import PeopleTable from "./People/Table";
-import { Navigate, Route, Routes } from "react-router";
-import { FaAlignJustify } from "react-icons/fa6";
+
 export default function Courses() {
     return (
         <div id="wd-courses">
@@ -34,7 +36,6 @@ export default function Courses() {
                         <Route path="Grades" element={<h3>Grades</h3>} />
                         <Route path="People" element={<PeopleTable />} />
                     </Routes>
-
                 </div>
             </div>
         </div>

@@ -19,7 +19,6 @@ export default function Kanbas() {
                     <Route path="/Inbox" element={<h1>Inbox</h1>} />
                 </Routes>
             </div>
-
         </div>
     );
 }
