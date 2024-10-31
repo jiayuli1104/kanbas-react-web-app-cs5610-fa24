@@ -5,8 +5,3 @@ import users from "./users.json";
 import enrollments from "./enrollments.json";
 
 export { courses, modules, assignments, users, enrollments };
-// const db = {
-//     courses, modules, assignments
-// };
-
-// export default db; 

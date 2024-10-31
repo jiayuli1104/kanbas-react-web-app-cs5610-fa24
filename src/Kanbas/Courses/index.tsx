@@ -6,12 +6,14 @@ import AssignmentEditor from "./Assignments/Editor";
 import PeopleTable from "./People/Table";
 import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import { FaAlignJustify } from "react-icons/fa6";
-import * as db from "../Database";
+// import * as db from '../Database';
 
-export default function Courses() {
+export default function Courses({ courses }: { courses: any[]; }) {
     const { cid } = useParams();
-    const courses = db.courses;
-    const course = courses.find((course: { _id: string }) => course._id === cid);
+    // console.log(cid);
+    const course = courses.find((course) => course._id === cid);
+    // console.log(courses);
+    // console.log(course);
     const { pathname } = useLocation();
     return (
         <div id="wd-courses">
@@ -33,6 +35,7 @@ export default function Courses() {
                                 <Route path="Zoom" element={<h3>Zoom</h3>} />
                                 <Route path="Assignments"
                                     element={<Assignments />} />
+                                <Route path="Assignments/Editor" element={<AssignmentEditor />} />
                                 <Route path="Assignments/:aid"
                                     element={<AssignmentEditor />} />
                                 <Route path="Quizzes" element={<h3>Quizzes</h3>} />

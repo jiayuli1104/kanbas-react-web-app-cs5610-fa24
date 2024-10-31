@@ -1,5 +1,8 @@
 import { FaSearch, FaPlus } from 'react-icons/fa';
-export default function AssignmentsControls() {
+interface AssignmentsControlsProps {
+  onAddAssignment: () => void;
+}
+export default function AssignmentsControls({ onAddAssignment }: AssignmentsControlsProps) {
   return (
     <div className="d-flex align-items-center justify-content-start pb-1 mb-3 text-nowrap">
       <div className="input-group me-5">
@@ -18,7 +21,7 @@ export default function AssignmentsControls() {
           <FaPlus className="me-1" /> 
           <span>Group</span>
         </button>
-        <button id="wd-add-assignment" className="btn btn-lg btn-danger me-1 float-end">
+        <button id="wd-add-assignment" className="btn btn-lg btn-danger me-1 float-end" onClick={onAddAssignment} >
           <FaPlus className="me-1" /> 
           <span>Assignment</span>
         </button>
