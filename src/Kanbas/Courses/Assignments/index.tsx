@@ -6,8 +6,8 @@ import AssignmentHeader from "./AssignmentHeader";
 import LessonControlButtons from "./LessonControlButtons";
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteAssignment } from "./reducer";
-
+import { deleteAssignment, setAssignments } from "./reducer";
+import * as client from "./client";
 interface Assignment {
   _id: string;
   title: string;
@@ -20,10 +20,22 @@ interface Assignment {
   editing?: boolean;
 }
 export default function Assignments() {
-  const { cid } = useParams();
+  const { cid } =  useParams<{ cid: string }>();
   const assignments = useSelector((state: any) => state.assignments.assignments);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const data = await client.findAssignmentsForCourse(cid!);
+        dispatch(setAssignments(data));
+      } catch (error) {
+        console.error('Failed to fetch assignments', error);
+      }
+    };
+    fetchAssignments();
+  }, [dispatch, cid]);
 
   const courseAssignments = assignments.filter((assignment: Assignment) => assignment.course === cid);
 
@@ -34,6 +46,15 @@ export default function Assignments() {
   const handleAddAssignment = () => {
     navigate(`/Kanbas/Courses/${cid}/Assignments/Editor`);
   };
+  const handleDeleteAssignment = async (assignmentId: string) => {
+    try {
+      await client.deleteAssignment(assignmentId);
+      dispatch(deleteAssignment(assignmentId));
+    } catch (error) {
+      console.error('Failed to delete assignment', error);
+    }
+  };
+
 
   return (
     <div id="wd-assignments" className="container mt-4">
@@ -56,7 +77,7 @@ export default function Assignments() {
               </div>
             </div>
             <div className="col-3 d-flex align-items-center justify-content-end p-3">
-              <LessonControlButtons assignmentTitle={assignment.title} assignmentId={assignment._id} />
+              <LessonControlButtons assignmentTitle={assignment.title} assignmentId={assignment._id} onDelete={handleDeleteAssignment}/>
             </div>
           </li>
         ))}
@@ -64,7 +85,3 @@ export default function Assignments() {
     </div>
   );
 }
-
-
-
-

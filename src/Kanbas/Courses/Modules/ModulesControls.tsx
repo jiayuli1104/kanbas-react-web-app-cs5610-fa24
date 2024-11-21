@@ -1,8 +1,16 @@
 import { FaPlus } from "react-icons/fa6";
 import GreenCheckmark from "./GreenCheckmark";
 import ModuleEditor from "./ModuleEditor";
+import { useSelector } from "react-redux";
+import { isFaculty } from "../../Account/roleCheck";
+
 export default function ModulesControls({ moduleName, setModuleName, addModule }:
     { moduleName: string; setModuleName: (title: string) => void; addModule: () => void; }) {
+    const { currentUser } = useSelector((state: any) => state.accountReducer);
+    const canEdit = isFaculty(currentUser);
+
+    if (!canEdit) return null;
+
     return (
         <div id="wd-modules-controls" className="text-nowrap">
             <button id="wd-add-module-btn" className="btn btn-lg btn-danger me-1 float-end"

@@ -18,11 +18,11 @@ export default function AssignmentsControls({ onAddAssignment }: AssignmentsCont
       </div>
       <div className="d-flex  mb-3">
         <button id="wd-add-assignment-group" className="btn btn-lg btn-secondary me-1 float-end d-flex align-items-center">
-          <FaPlus className="me-1" /> 
+          <FaPlus className="me-1" />
           <span>Group</span>
         </button>
         <button id="wd-add-assignment" className="btn btn-lg btn-danger me-1 float-end" onClick={onAddAssignment} >
-          <FaPlus className="me-1" /> 
+          <FaPlus className="me-1" />
           <span>Assignment</span>
         </button>
       </div>

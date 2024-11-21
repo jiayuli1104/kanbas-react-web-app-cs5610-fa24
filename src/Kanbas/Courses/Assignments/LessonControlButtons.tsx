@@ -1,19 +1,20 @@
 import { IoEllipsisVertical } from "react-icons/io5";
 import GreenCheckmark from "../Modules/GreenCheckmark";
 import { FaTrash } from "react-icons/fa";
-
 import DeleteConfirmation from './DeleteConfirmation';
 interface LessonControlButtonsProps {
   assignmentTitle: string;
   assignmentId: string;
+  onDelete: (assignmentId: string) => void;
 }
-
 export default function LessonControlButtons({
   assignmentTitle,
   assignmentId,
+  onDelete
 }: LessonControlButtonsProps) {
-
-  
+  const handleDelete = () => {
+    onDelete(assignmentId);
+  };
   return (
     <div className="float-end">
       <FaTrash
@@ -21,10 +22,9 @@ export default function LessonControlButtons({
         data-bs-toggle="modal"
         data-bs-target={`#delete-modal-${assignmentId}`}
       />
-      <DeleteConfirmation assignmentId={assignmentId} assignmentTitle={assignmentTitle} />
+      <DeleteConfirmation assignmentId={assignmentId} assignmentTitle={assignmentTitle} onDelete={handleDelete} />
       <GreenCheckmark />
       <IoEllipsisVertical className="fs-4" />
-      
     </div>
   );
 }

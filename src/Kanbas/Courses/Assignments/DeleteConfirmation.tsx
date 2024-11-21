@@ -1,19 +1,16 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteAssignment } from './reducer';
-
 interface DeleteConfirmationProps {
   assignmentId: string;
   assignmentTitle: string;
+  onDelete: (assignmentId: string) => void;
 }
-
-export default function DeleteConfirmation({ assignmentId, assignmentTitle }: DeleteConfirmationProps) {
+export default function DeleteConfirmation({ assignmentId, assignmentTitle, onDelete }: DeleteConfirmationProps) {
   const dispatch = useDispatch();
-
   const handleDelete = () => {
-    dispatch(deleteAssignment(assignmentId));
+    onDelete(assignmentId);
   };
-
   return (
     <div className="modal fade" id={`delete-modal-${assignmentId}`} tabIndex={-1} aria-labelledby="deleteModalLabel" aria-hidden="true">
       <div className="modal-dialog">
