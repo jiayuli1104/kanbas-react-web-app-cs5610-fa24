@@ -38,6 +38,17 @@ const enrollmentsSlice = createSlice({
     },
     toggleShowAllCourses: (state) => {
       state.showAllCourses = !state.showAllCourses;
+    },
+    findEnrollments: (state, action) => {
+      state.enrollments =  action.payload;
+    },
+    addEnrollment: (state, { payload: enrollment }) => {
+      
+      state.enrollments = [...state.enrollments, enrollment] as any;
+    },
+    deleteEnrollment: (state, { payload: enrollment }) => {
+      state.enrollments = state.enrollments.filter(
+        (m: any) => !(m.course === enrollment.course && m.user === enrollment.user));
     }
   }
 });
@@ -46,7 +57,8 @@ export const {
   setEnrollments, 
   enrollInCourse, 
   unenrollFromCourse, 
-  toggleShowAllCourses 
+  toggleShowAllCourses,
+  addEnrollment, deleteEnrollment, findEnrollments
 } = enrollmentsSlice.actions;
 
 export default enrollmentsSlice.reducer;

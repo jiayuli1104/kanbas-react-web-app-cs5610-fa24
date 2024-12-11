@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAssignment, updateAssignment } from './reducer';
+import * as client from "./client";
 
 interface Assignment {
   _id: string;
@@ -16,15 +17,19 @@ interface Assignment {
 }
 
 export default function AssignmentEditor() {
+  console.log('AssignmentEditor component rendering');
+  
   const { cid, aid } = useParams();
   const assignments = useSelector((state: any) => state.assignments.assignments);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log('Initial params:', { cid, aid, assignments });
+
   const [assignment, setAssignment] = useState<Partial<Assignment>>({
     title: '',
     description: '',
-    points: 0,
+    points: 100,
     dueDate: '',
     availableDate: '',
     availableUntil: ''
@@ -39,11 +44,26 @@ export default function AssignmentEditor() {
     }
   }, [aid, assignments]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    console.log('handleSave called');
+    console.log('aid:', aid);
+    console.log('cid:', cid);
+    console.log('assignment:', assignment);
+    
     if (aid) {
-      dispatch(updateAssignment({ ...assignment, _id: aid }));
-    } else {
-      dispatch(addAssignment({ ...assignment, course: cid }));
+        try {
+            const updatedAssignment = await client.updateAssignment({ ...assignment, _id: aid });
+            dispatch(updateAssignment(updatedAssignment));
+        } catch (error) {
+            console.error('Failed to update assignment', error);
+        }
+    } else if (cid) {
+        try {
+            const newAssignment = await client.createAssignment(cid, assignment);
+            dispatch(addAssignment(newAssignment));
+        } catch (error) {
+            console.error('Failed to create assignment', error);
+        }
     }
     navigate(`/Kanbas/Courses/${cid}/Assignments`);
   };
@@ -74,26 +94,26 @@ export default function AssignmentEditor() {
           <input type="text" className="form-control" id="points" name="points" value={assignment.points} onChange={handleChange} />
         </div>
       </div>
-      
+
       <div className="mb-3 row align-items-start">
         <div className="col-3 text-end">
           <label htmlFor="group" className="form-label pt-1">Assignment Group</label>
         </div>
         <div className='col'>
-          <select className="form-control" id="group" name="group"  onChange={handleChange}>
+          <select className="form-control" id="group" name="group" onChange={handleChange}>
             <option value="assignments">ASSIGNMENTS</option>
             <option value="exams">EXAMS</option>
             <option value="quizzes">QUIZZES</option>
           </select>
         </div>
       </div>
-      
+
       <div className="mb-3 row align-items-start">
         <div className="col-3 text-end">
           <label htmlFor="displayGradeAs" className="form-label pt-1">Display Grade as</label>
         </div>
         <div className='col'>
-          <select className="form-control" id="displayGradeAs" name="displayGradeAs"  onChange={handleChange}>
+          <select className="form-control" id="displayGradeAs" name="displayGradeAs" onChange={handleChange}>
             <option value="points">Points</option>
             <option value="percentage">Percentage</option>
             <option value="letter-grade">Letter Grade</option>
@@ -107,7 +127,7 @@ export default function AssignmentEditor() {
         </div>
         <div className='col border p-3'>
           <div className='mb-3'>
-            <select className="form-control" id="submissionType" name="submissionType"  onChange={handleChange}>
+            <select className="form-control" id="submissionType" name="submissionType" onChange={handleChange}>
               <option value="online">Online</option>
               <option value="on-paper">On Paper</option>
             </select>
@@ -116,11 +136,11 @@ export default function AssignmentEditor() {
           <fieldset className="border p-2">
             <legend className="w-auto p-2"><strong>Online Entry Options</strong></legend>
             <div className="form-check mb-3">
-              <input className="form-check-input" type="checkbox" id="textEntry" name="textEntry"  onChange={handleChange} />
+              <input className="form-check-input" type="checkbox" id="textEntry" name="textEntry" onChange={handleChange} />
               <label className="form-check-label" htmlFor="textEntry">Text Entry</label>
             </div>
             <div className="form-check mb-3">
-              <input className="form-check-input" type="checkbox" id="websiteUrl" name="websiteUrl"  onChange={handleChange} />
+              <input className="form-check-input" type="checkbox" id="websiteUrl" name="websiteUrl" onChange={handleChange} />
               <label className="form-check-label" htmlFor="websiteUrl">Website URL</label>
             </div>
             <div className="form-check mb-3">
@@ -128,15 +148,15 @@ export default function AssignmentEditor() {
               <label className="form-check-label" htmlFor="mediaRecordings">Media Recordings</label>
             </div>
             <div className="form-check mb-3">
-              <input className="form-check-input" type="checkbox" id="studentAnnotation" name="studentAnnotation"  onChange={handleChange} />
+              <input className="form-check-input" type="checkbox" id="studentAnnotation" name="studentAnnotation" onChange={handleChange} />
               <label className="form-check-label" htmlFor="studentAnnotation">Student Annotation</label>
             </div>
             <div className="form-check mb-3">
-              <input className="form-check-input" type="checkbox" id="fileUploads" name="fileUploads"  onChange={handleChange} />
+              <input className="form-check-input" type="checkbox" id="fileUploads" name="fileUploads" onChange={handleChange} />
               <label className="form-check-label" htmlFor="fileUploads">File Uploads</label>
             </div>
           </fieldset>
-          
+
         </div>
       </div>
 
@@ -147,30 +167,37 @@ export default function AssignmentEditor() {
         <div className='col border p-3'>
           <div className="mb-3">
             <label htmlFor="assignTo" className="form-label mb-0"><strong>Assign To</strong></label>
-            <input type="text" className="form-control" id="assignTo" name="assignTo" defaultValue={'Everyone'} onChange={handleChange} />
+            <input type="text" className="form-control" id="assignTo" name="assignTo" value={'Everyone'} onChange={handleChange} />
           </div>
           {/* Due Date and Available Date */}
           <div className="mb-3">
             <label htmlFor="wd-due-date" className="form-label mb-0"><strong>Due Date</strong></label>
-            <input type="date" className="form-control" id="dueDate" name="dueDate" defaultValue={assignment.dueDate} onChange={handleChange} />
+            <input type="date" className="form-control" id="dueDate" name="dueDate" value={assignment.dueDate} onChange={handleChange} />
           </div>
           <div className='row mb-3'>
             <div className="col-md-6">
               <label htmlFor="wd-available-from" className="form-label mb-0"><strong>Available From</strong></label>
-              <input type="date" className="form-control" id="availableFrom" name="availableFrom" defaultValue={assignment.availableDate} onChange={handleChange} />
+              <input type="date" className="form-control" id="availableFrom" name="availableDate" value={assignment.availableDate} onChange={handleChange} />
             </div>
             <div className="col-md-6">
               <label htmlFor="wd-available-until" className="form-label mb-0"><strong>Until</strong></label>
-              <input type="date" className="form-control" id="availableUntil" name="availableUntil" defaultValue={assignment.availableUntil} onChange={handleChange} />
+              <input type="date" className="form-control" id="availableUntil" name="availableUntil" value={assignment.availableUntil} onChange={handleChange} />
             </div>
           </div>
-        </div> 
+        </div>
       </div>
 
       {/* Navigation buttons */}
       <div className="text-end mt-3">
         <Link to={`/Kanbas/Courses/${cid}/Assignments`} className="btn btn-secondary me-2">Cancel</Link>
-        <button onClick={handleSave} className="btn btn-success">Save</button>
+        <button 
+            onClick={() => {
+                console.log('Save button clicked');
+                handleSave();
+            }} 
+            className="btn btn-success">
+            Save
+        </button>
       </div>
     </div>
   );

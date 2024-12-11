@@ -1,8 +1,14 @@
 import { FaSearch, FaPlus } from 'react-icons/fa';
-interface AssignmentsControlsProps {
-  onAddAssignment: () => void;
-}
-export default function AssignmentsControls({ onAddAssignment }: AssignmentsControlsProps) {
+import { useNavigate, useParams } from 'react-router-dom';
+
+export default function AssignmentsControls() {
+  const navigate = useNavigate();
+  const { cid } = useParams();
+
+  const handleAddAssignment = () => {
+    navigate(`/Kanbas/Courses/${cid}/Assignments/new`);
+  };
+
   return (
     <div className="d-flex align-items-center justify-content-start pb-1 mb-3 text-nowrap">
       <div className="input-group me-5">
@@ -16,16 +22,23 @@ export default function AssignmentsControls({ onAddAssignment }: AssignmentsCont
           placeholder="Search..."
         />
       </div>
-      <div className="d-flex  mb-3">
-        <button id="wd-add-assignment-group" className="btn btn-lg btn-secondary me-1 float-end d-flex align-items-center">
+      <div className="d-flex mb-3">
+        <button 
+          id="wd-add-assignment-group" 
+          className="btn btn-lg btn-secondary me-1 float-end d-flex align-items-center"
+        >
           <FaPlus className="me-1" />
           <span>Group</span>
         </button>
-        <button id="wd-add-assignment" className="btn btn-lg btn-danger me-1 float-end" onClick={onAddAssignment} >
+        <button 
+          id="wd-add-assignment" 
+          className="btn btn-lg btn-danger me-1 float-end d-flex align-items-center"
+          onClick={handleAddAssignment}
+        >
           <FaPlus className="me-1" />
           <span>Assignment</span>
         </button>
       </div>
     </div>
-  )
+  );
 }

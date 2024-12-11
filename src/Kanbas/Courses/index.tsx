@@ -1,31 +1,52 @@
+import { useParams, Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setAssignments } from "./Assignments/reducer";
 import CoursesNavigation from "./Navigation";
 import Modules from "./Modules";
 import Home from "./Home";
 import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
+import { FaAlignJustify } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 import PeopleTable from "./People/Table";
-import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
-import { FaAlignJustify } from "react-icons/fa6";
-import { useSelector } from "react-redux";
-import { isFaculty } from "../Account/roleCheck";
+import * as client from "./client";
+import * as courseClient from "./client";
+import ProtectedRoute from "../Account/ProtectedRoute";
+import * as assignmentClient from "./Assignments/client";
 
 export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
-  const { pathname } = useLocation();
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
-  
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer || { assignments: [] });
   const course = courses.find((course) => course._id === cid);
-  const canAccess = currentUser?.role === 'FACULTY' || 
-    enrollments.some(
-      (enrollment: any) => 
-        enrollment.user === currentUser._id && 
-        enrollment.course === cid
-    );
+  const { pathname } = useLocation();
+  const dispatch = useDispatch();
+  const [people, setPeople] = useState<any[]>([]);
+  const [assignment, setAssignment] = useState({
+    _id: "-1",
+    title: "New Assignment",
+    points: 100,
+    description: "New Assignment Description",
+    due: "2024-10-20T23:59",
+    course: cid,
+    availableFrom: "2024-10-13T23:59",
+    availableUntil: "2024-10-20T23:59"
+  });
 
-  if (!canAccess) {
-    return <Navigate to="/Kanbas/Dashboard" />;
-  }
+  const fetchPeople = async () => {
+    const people = await courseClient.findUsersForCourse(cid as string);
+    setPeople(people);
+  };
+
+  const fetchAssignments = async () => {
+    const assignments = await assignmentClient.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+
+  useEffect(() => {
+    fetchPeople();
+    fetchAssignments();
+  }, [cid]);
 
   if (!course) {
     return <Navigate to="/Kanbas/Dashboard" />;
@@ -44,20 +65,24 @@ export default function Courses({ courses }: { courses: any[]; }) {
         </div>
         <div className="flex-fill">
           <Routes>
-            <Route path="/" element={<Navigate to="Home" />} />
-            <Route path="Home" element={<Home />} />
+            <Route path="Home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="Modules" element={<Modules />} />
-            <Route path="Piazza" element={<h3>Piazza</h3>} />
-            <Route path="Zoom" element={<h3>Zoom</h3>} />
+            <Route path="Piazza" element={<h4>Piazza</h4> }  />
+            <Route path="Zoom" element={<h4>Zoom</h4> } />
             <Route path="Assignments" element={<Assignments />} />
-            <Route path="Assignments/Editor" element={<AssignmentEditor />} />
+            <Route path="Assignments/new" element={<AssignmentEditor />} />
             <Route path="Assignments/:aid" element={<AssignmentEditor />} />
-            <Route path="Quizzes" element={<h3>Quizzes</h3>} />
-            <Route path="Grades" element={<h3>Grades</h3>} />
-            <Route path="People" element={<PeopleTable />} />
+            <Route path="Quizzes" element={<h4>Quizzes</h4> } />
+            <Route path="Grades" element={<h4>Grades</h4> } />
+            <Route path="People" element={<PeopleTable users={people} />} />
           </Routes>
         </div>
       </div>
     </div>
   );
 }
+
+
+
+  
+

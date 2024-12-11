@@ -1,67 +1,42 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FaPenSquare } from "react-icons/fa";
 import { BsGripVertical } from "react-icons/bs";
-import AssignmentsControls from "./AssignmentsControls";
-import AssignmentHeader from "./AssignmentHeader";
-import LessonControlButtons from "./LessonControlButtons";
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteAssignment, setAssignments } from "./reducer";
-import * as client from "./client";
+import AssignmentsControls from './AssignmentsControls';
+import AssignmentHeader from './AssignmentHeader';
+import LessonControlButtons from './LessonControlButtons';
+import { deleteAssignment } from './reducer';
+import * as client from './client';
 interface Assignment {
   _id: string;
   title: string;
   course: string;
-  description: string;
-  points: number;
-  dueDate: string;
-  availableDate: string;
-  availableUntil?: string;
-  editing?: boolean;
+  description?: string;
+  points?: number;
+  dueDate?: string;
 }
 export default function Assignments() {
-  const { cid } =  useParams<{ cid: string }>();
+  const { cid } = useParams();
   const assignments = useSelector((state: any) => state.assignments.assignments);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchAssignments = async () => {
-      try {
-        const data = await client.findAssignmentsForCourse(cid!);
-        dispatch(setAssignments(data));
-      } catch (error) {
-        console.error('Failed to fetch assignments', error);
-      }
-    };
-    fetchAssignments();
-  }, [dispatch, cid]);
-
-  const courseAssignments = assignments.filter((assignment: Assignment) => assignment.course === cid);
-
-  useEffect(() => {
-    console.log('Course Assignments:', courseAssignments);
-  }, [assignments, cid]);
-
-  const handleAddAssignment = () => {
-    navigate(`/Kanbas/Courses/${cid}/Assignments/Editor`);
-  };
+  const courseAssignments = assignments.filter(
+    (assignment: Assignment) => assignment.course === cid
+  );
   const handleDeleteAssignment = async (assignmentId: string) => {
     try {
       await client.deleteAssignment(assignmentId);
       dispatch(deleteAssignment(assignmentId));
     } catch (error) {
-      console.error('Failed to delete assignment', error);
+      console.error('Failed to delete assignment:', error);
     }
   };
-
-
   return (
     <div id="wd-assignments" className="container mt-4">
-      <AssignmentsControls onAddAssignment={handleAddAssignment} /><br />
+      <AssignmentsControls /><br />
       <AssignmentHeader />
       <ul id="wd-assignment-list" className="list-group rounded-0" style={{ borderLeft: '4px solid green' }}>
-        {courseAssignments.map((assignment : Assignment) => (
+        {courseAssignments.map((assignment: Assignment) => (
           <li key={assignment._id} className="wd-assignment-list-item list-group-item d-flex justify-content-between p-0 fs-5 border-gray">
             <div className="col-1 d-flex align-items-center justify-content-start">
               <Link className="wd-assignment-link d-flex align-items-center p-2" to={`${assignment._id}`}>
@@ -69,16 +44,25 @@ export default function Assignments() {
                 <FaPenSquare className="fs-3 " style={{ color: 'green' }} />
               </Link>
             </div>
-            <div className="col-7 pt-3 pb-3">
-              <div><strong>{assignment.title}</strong></div>
+                <div className="col-7 pt-3 pb-3">
+              <div><strong><Link
+      to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
+      className="text-dark text-decoration-none"
+    >
+      {assignment.title}
+    </Link></strong></div>
               <div>
-                <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> {assignment.availableDate} |
+                <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> {assignment.dueDate} |
                 <strong> Due</strong> {assignment.dueDate} | {assignment.points} pts
               </div>
             </div>
-            <div className="col-3 d-flex align-items-center justify-content-end p-3">
-              <LessonControlButtons assignmentTitle={assignment.title} assignmentId={assignment._id} onDelete={handleDeleteAssignment}/>
-            </div>
+              <div className="col-3 d-flex align-items-center justify-content-end p-3">
+                <LessonControlButtons
+                  assignmentTitle={assignment.title}
+                  assignmentId={assignment._id}
+                  onDelete={handleDeleteAssignment}
+                />
+              </div>
           </li>
         ))}
       </ul>

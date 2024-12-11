@@ -18,6 +18,9 @@ export default function AccountNavigation() {
                 <NavLink id="wd-account-profile-link" to="/Kanbas/Account/Profile" className={({ isActive }) => "list-group-item border border-0" + (isActive ? "list-group-item active border border-0" : "list-group-item text-danger border border-0")}>Profile
                 </NavLink>
             )}
+{currentUser && currentUser.role === "ADMIN" && (
+      <Link to={`/Kanbas/Account/Users`} className={`list-group-item border border-0
+        ${pathname.includes("Users") ? "active" : "text-danger"}`}> Users </Link> )}
         </div>
     );
 }
